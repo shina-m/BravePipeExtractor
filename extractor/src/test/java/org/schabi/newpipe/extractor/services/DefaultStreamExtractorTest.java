@@ -83,6 +83,7 @@ public abstract class DefaultStreamExtractorTest extends DefaultExtractorTest<St
     public int expectedStreamSegmentsCount() { return -1; } // return 0 or greater to test (default is -1 to ignore)
     public List<MetaInfo> expectedMetaInfo() throws MalformedURLException { return Collections.emptyList(); } // default: no metadata info available
     public ContentAvailability expectedContentAvailability() { return ContentAvailability.UNKNOWN; } // default: unknown content availability
+    public boolean expectedHasLiveChat() { return false; } // default: no live chat available
 
     @Test
     @Override
@@ -168,13 +169,13 @@ public abstract class DefaultStreamExtractorTest extends DefaultExtractorTest<St
         assertNotNull(description);
 
         if (expectedDescriptionIsEmpty()) {
-            assertTrue(description.getContent().isEmpty(), "description is not empty");
+            assertTrue(description.content().isEmpty(), "description is not empty");
         } else {
-            assertFalse(description.getContent().isEmpty(), "description is empty");
+            assertFalse(description.content().isEmpty(), "description is empty");
         }
 
         for (final String s : expectedDescriptionContains()) {
-            ExtractorAsserts.assertContains(s, description.getContent());
+            ExtractorAsserts.assertContains(s, description.content());
         }
     }
 
@@ -454,7 +455,7 @@ public abstract class DefaultStreamExtractorTest extends DefaultExtractorTest<St
         final List<Executable> assertions = new ArrayList<>();
         for (final MetaInfo expectedMetaInfo : expectedMetaInfoList) {
             final List<String> texts = metaInfoList.stream()
-                    .map((metaInfo) -> metaInfo.getContent().getContent())
+                    .map((metaInfo) -> metaInfo.getContent().content())
                     .collect(Collectors.toList());
             final List<String> titles = metaInfoList.stream().map(MetaInfo::getTitle).collect(Collectors.toList());
             final List<URL> urls = metaInfoList.stream().flatMap(info -> info.getUrls().stream())
@@ -462,7 +463,7 @@ public abstract class DefaultStreamExtractorTest extends DefaultExtractorTest<St
             final List<String> urlTexts = metaInfoList.stream().flatMap(info -> info.getUrlTexts().stream())
                     .collect(Collectors.toList());
 
-            assertions.add(() -> assertContains(expectedMetaInfo.getContent().getContent(), texts));
+            assertions.add(() -> assertContains(expectedMetaInfo.getContent().content(), texts));
             assertions.add(() -> assertContains(expectedMetaInfo.getTitle(), titles));
 
             for (final String expectedUrlText : expectedMetaInfo.getUrlTexts()) {
@@ -479,5 +480,10 @@ public abstract class DefaultStreamExtractorTest extends DefaultExtractorTest<St
     @Override
     public void testContentAvailability() throws Exception {
         assertEquals(expectedContentAvailability(), extractor().getContentAvailability());
+    }
+
+    @Test
+    public void testHasLiveChat() throws Exception {
+        assertEquals(expectedHasLiveChat(), extractor().hasLiveChat());
     }
 }

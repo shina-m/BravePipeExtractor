@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * Tests for {@link BandcampPlaylistExtractor}
  */
-public class BandcampPlaylistExtractorTest {
+public class BandcampPlaylistExtractorTest implements InitBandcampTest {
 
     void init(final String useCase) {
         InitNewPipeTest.initNewPipe(getClass(), useCase);
@@ -154,10 +154,10 @@ public class BandcampPlaylistExtractorTest {
         public void testDescription() throws ParsingException {
             final Description description = extractor().getDescription();
             assertNotEquals(Description.EMPTY_DESCRIPTION, description);
-            assertContains("Artwork by Shona Radcliffe", description.getContent()); // about
+            assertContains("Artwork by Shona Radcliffe", description.content()); // about
             assertContains("All tracks written, produced and recorded by Mac Benson",
-                    description.getContent()); // credits
-            assertContains("all rights reserved", description.getContent()); // license
+                    description.content()); // credits
+            assertContains("all rights reserved", description.content()); // license
         }
 
         @Test

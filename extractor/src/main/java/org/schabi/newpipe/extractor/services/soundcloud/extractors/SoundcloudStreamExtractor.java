@@ -109,7 +109,7 @@ public class SoundcloudStreamExtractor extends StreamExtractor {
     @Nonnull
     @Override
     public Description getDescription() {
-        return new Description(track.getString("description"), Description.PLAIN_TEXT);
+        return Description.of(track.getString("description"), Description.Type.PLAIN_TEXT);
     }
 
     @Override
@@ -240,6 +240,9 @@ public class SoundcloudStreamExtractor extends StreamExtractor {
                         } else if (preset.contains("aac_160k")) {
                             builder.setMediaFormat(MediaFormat.M4A);
                             builder.setAverageBitrate(160);
+                        } else if (preset.contains("aac_96k")) {
+                            builder.setMediaFormat(MediaFormat.M4A);
+                            builder.setAverageBitrate(96);
                         } else {
                             // Unknown format, skip to the next audio stream
                             return;
