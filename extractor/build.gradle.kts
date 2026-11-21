@@ -16,6 +16,7 @@ val lastCommitHash: String = providers.exec {
 }.standardOutput.asText.map { it.trim() }.get()
 
 plugins {
+    alias(libs.plugins.jetbrains.kotlin.jvm)
     alias(libs.plugins.google.protobuf)
     id("com.squareup.wire") version "5.5.0"
     checkstyle
@@ -23,15 +24,13 @@ plugins {
     signing
 }
 
+kotlin {
+    explicitApi()
+}
+
 java {
     withSourcesJar()
     withJavadocJar()
-}
-
-sourceSets {
-    main {
-        java.srcDir("../timeago-parser/src/main/java")
-    }
 }
 
 // Protobuf files would uselessly end up in the JAR otherwise, see
@@ -88,6 +87,8 @@ tasks.checkstyleTest {
 }
 
 dependencies {
+    api(projects.timeagoParser)
+
     implementation(libs.newpipe.nanojson)
     implementation(libs.jsoup)
     implementation(libs.google.jsr305)
