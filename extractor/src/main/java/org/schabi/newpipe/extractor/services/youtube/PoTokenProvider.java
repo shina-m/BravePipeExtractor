@@ -51,4 +51,29 @@ public interface PoTokenProvider {
      */
     @Nullable
     PoTokenResult getWebClientPoToken(String videoId);
+
+    /**
+     * BravePipe compatibility: not part of the 0.27 API anymore, kept so that implementations
+     * written for 0.26.x keep compiling.
+     */
+    @Nullable
+    default PoTokenResult getWebEmbedClientPoToken(final String videoId) {
+        return null;
+    }
+
+    /**
+     * BravePipe compatibility, see {@link #getWebEmbedClientPoToken(String)}.
+     */
+    @Nullable
+    default PoTokenResult getAndroidClientPoToken(final String videoId) {
+        return null;
+    }
+
+    /**
+     * BravePipe compatibility, see {@link #getWebEmbedClientPoToken(String)}.
+     */
+    @Nullable
+    default PoTokenResult getIosClientPoToken(final String videoId) {
+        return null;
+    }
 }

@@ -15,8 +15,27 @@ public record Description(@Nonnull String content, @Nonnull Type type) implement
     @Nonnull
     public static final Description EMPTY_DESCRIPTION = new Description("", Type.PLAIN_TEXT);
 
+    // BravePipe: keep the pre-0.27 integer constants and bean-style accessors so that the
+    // BravePipe app keeps compiling against both the published 0.26.x artifact and this fork.
+    public static final int HTML = 0;
+    public static final int MARKDOWN = 1;
+    public static final int PLAIN_TEXT = 2;
+
     public enum Type {
         HTML, MARKDOWN, PLAIN_TEXT
+    }
+
+    public Description(@Nullable final String content, final int type) {
+        this(content, Type.values()[type]);
+    }
+
+    @Nonnull
+    public String getContent() {
+        return content;
+    }
+
+    public int getType() {
+        return type.ordinal();
     }
 
     @Nonnull
