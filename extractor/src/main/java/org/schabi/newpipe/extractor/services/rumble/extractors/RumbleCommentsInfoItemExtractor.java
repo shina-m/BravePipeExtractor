@@ -45,8 +45,8 @@ public class RumbleCommentsInfoItemExtractor implements CommentsInfoItemExtracto
 
     @Override
     public Description getCommentText() {
-        return new Description(element.selectFirst("p.comment-text").wholeText(),
-                Description.PLAIN_TEXT);
+        return Description.of(element.selectFirst("p.comment-text").wholeText(),
+                Description.Type.PLAIN_TEXT);
     }
 
     @Override
